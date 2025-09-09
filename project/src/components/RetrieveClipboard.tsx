@@ -22,6 +22,7 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
   const [copied, setCopied] = useState(false);
   const [clipboardInfo, setClipboardInfo] = useState<any>(null);
 
+  // 🔹 Fetch clipboard metadata before retrieving content
   const fetchClipboardInfo = async (clipboardCode: string) => {
     try {
       const response = await fetch(`http://localhost:3001/api/clipboard/${clipboardCode}/info`);
@@ -35,18 +36,21 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
     }
   };
 
+  // 🔹 Code input change
   const handleCodeChange = (value: string) => {
-    setCode(value.toUpperCase());
+    const formatted = value.toUpperCase();
+    setCode(formatted);
     setError('');
     setClipboardData(null);
     setRequiresPassword(false);
     setClipboardInfo(null);
-    
-    if (value.length === 6) {
-      fetchClipboardInfo(value);
+
+    if (formatted.length === 6) {
+      fetchClipboardInfo(formatted);
     }
   };
 
+  // 🔹 Submit request to retrieve clipboard
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!code.trim()) return;
@@ -58,7 +62,7 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
       const response = await fetch(`http://localhost:3001/api/clipboard/${code.trim()}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: password || undefined })
+        body: JSON.stringify({ password: password || undefined }),
       });
 
       if (!response.ok) {
@@ -83,6 +87,7 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
     }
   };
 
+  // 🔹 Copy to clipboard
   const copyContent = async () => {
     if (clipboardData) {
       await navigator.clipboard.writeText(clipboardData.content);
@@ -91,30 +96,27 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
     }
   };
 
-  const formatDate = (date: string | Date) => {
-    return new Date(date).toLocaleString();
-  };
+  // 🔹 Format dates
+  const formatDate = (date: string | Date) => new Date(date).toLocaleString();
 
   const formatExpiry = (expiresAt: string | null) => {
     if (!expiresAt) return null;
     const expiry = new Date(expiresAt);
     const now = new Date();
     const diff = expiry.getTime() - now.getTime();
-    
+
     if (diff <= 0) return 'Expired';
-    
+
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    
-    if (hours > 0) {
-      return `Expires in ${hours}h ${minutes}m`;
-    }
-    return `Expires in ${minutes}m`;
+
+    return hours > 0 ? `Expires in ${hours}h ${minutes}m` : `Expires in ${minutes}m`;
   };
 
   return (
     <div className="w-full max-w-2xl mx-auto">
       <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
+        {/* Header */}
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
             <Search className="w-5 h-5 text-green-600" />
@@ -122,11 +124,11 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
           <h2 className="text-2xl font-bold text-gray-800">Retrieve Clipboard</h2>
         </div>
 
+        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Code Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Clipboard Code
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Clipboard Code</label>
             <input
               type="text"
               value={code}
@@ -138,6 +140,7 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
             />
           </div>
 
+          {/* Info Section */}
           {clipboardInfo && (
             <div className="bg-gray-50 rounded-xl p-4 space-y-2">
               <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -165,11 +168,11 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
             </div>
           )}
 
+          {/* Password Input */}
           {requiresPassword && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Lock className="w-4 h-4 inline mr-2" />
-                Password Required
+                <Lock className="w-4 h-4 inline mr-2" /> Password Required
               </label>
               <input
                 type="password"
@@ -182,12 +185,14 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
             </div>
           )}
 
+          {/* Error Message */}
           {error && (
             <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
               {error}
             </div>
           )}
 
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={isLoading || !code.trim() || code.length !== 6}
@@ -197,6 +202,7 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
           </button>
         </form>
 
+        {/* Retrieved Content */}
         {clipboardData && (
           <div className="mt-8 space-y-4">
             <div className="flex items-center justify-between">
@@ -209,7 +215,7 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
                 {copied ? 'Copied!' : 'Copy'}
               </button>
             </div>
-            
+
             <div className="bg-gray-50 rounded-xl p-4">
               <pre className="whitespace-pre-wrap text-sm text-gray-800 font-mono overflow-x-auto">
                 {clipboardData.content}
@@ -223,8 +229,7 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
               </div>
               {clipboardData.burned && (
                 <div className="flex items-center gap-2 text-orange-600">
-                  <Flame className="w-4 h-4" />
-                  This clipboard has been burned and deleted
+                  <Flame className="w-4 h-4" /> This clipboard has been burned and deleted
                 </div>
               )}
               {clipboardData.expiresAt && !clipboardData.burned && (

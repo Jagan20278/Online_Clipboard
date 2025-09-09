@@ -83,10 +83,10 @@ export default function CreateClipboard({ onClipboardCreated }: CreateClipboardP
             
             <div className="bg-gray-50 rounded-xl p-4 mb-6">
               <div className="flex items-center justify-center gap-4">
-                <span className="text-3xl font-mono font-bold text-blue-600 tracking-wider">{createdCode}</span>
+                <span className="text-3xl font-mono font-bold text-teal-600 tracking-wider">{createdCode}</span>
                 <button
                   onClick={copyCode}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
                 >
                   {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                   {copied ? 'Copied!' : 'Copy'}
@@ -96,7 +96,7 @@ export default function CreateClipboard({ onClipboardCreated }: CreateClipboardP
 
             <button
               onClick={() => setCreatedCode(null)}
-              className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 font-medium"
+              className="px-6 py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition-all duration-200 font-medium"
             >
               Create Another Clipboard
             </button>
@@ -110,8 +110,8 @@ export default function CreateClipboard({ onClipboardCreated }: CreateClipboardP
     <div className="w-full max-w-2xl mx-auto">
       <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-            <Plus className="w-5 h-5 text-blue-600" />
+          <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
+            <Plus className="w-5 h-5 text-teal-600" />
           </div>
           <h2 className="text-2xl font-bold text-gray-800">Create Clipboard</h2>
         </div>
@@ -125,7 +125,7 @@ export default function CreateClipboard({ onClipboardCreated }: CreateClipboardP
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Paste your text, code, or any content here..."
-              className="w-full h-40 px-4 py-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full h-40 px-4 py-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
               required
             />
           </div>
@@ -141,7 +141,7 @@ export default function CreateClipboard({ onClipboardCreated }: CreateClipboardP
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Leave empty for no password"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
               />
             </div>
 
@@ -153,7 +153,7 @@ export default function CreateClipboard({ onClipboardCreated }: CreateClipboardP
               <select
                 value={expiryOption}
                 onChange={(e) => setExpiryOption(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
               >
                 {expiryOptions.map(option => (
                   <option key={option.value} value={option.value}>
@@ -170,7 +170,7 @@ export default function CreateClipboard({ onClipboardCreated }: CreateClipboardP
               id="burnAfterReading"
               checked={burnAfterReading}
               onChange={(e) => setBurnAfterReading(e.target.checked)}
-              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
             />
             <label htmlFor="burnAfterReading" className="text-sm font-medium text-gray-700 flex items-center gap-2">
               <Flame className="w-4 h-4 text-orange-500" />
@@ -181,7 +181,7 @@ export default function CreateClipboard({ onClipboardCreated }: CreateClipboardP
           <button
             type="submit"
             disabled={isLoading || !content.trim()}
-            className="w-full py-3 px-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
+            className="w-full py-3 px-6 bg-gradient-to-r from-teal-600 to-teal-700 text-white rounded-xl hover:from-teal-700 hover:to-teal-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
           >
             {isLoading ? 'Creating...' : 'Create Clipboard'}
           </button>
