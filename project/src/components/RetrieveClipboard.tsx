@@ -13,6 +13,7 @@ interface ClipboardData {
 }
 
 export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboardProps) {
+    const apiUrl = import.meta.env.VITE_API_URL;
   const [code, setCode] = useState(initialCode);
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +26,10 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
   // 🔹 Fetch clipboard metadata before retrieving content
   const fetchClipboardInfo = async (clipboardCode: string) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/clipboard/${clipboardCode}/info`);
+    
+
+const response = await fetch(`${apiUrl}/api/clipboard/${clipboardCode}/info`);
+
       if (response.ok) {
         const info = await response.json();
         setClipboardInfo(info);
@@ -59,7 +63,7 @@ export default function RetrieveClipboard({ initialCode = '' }: RetrieveClipboar
     setError('');
 
     try {
-      const response = await fetch(`http://localhost:3001/api/clipboard/${code.trim()}`, {
+     const response = await fetch(`${apiUrl}/api/clipboard/${code.trim()}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: password || undefined }),

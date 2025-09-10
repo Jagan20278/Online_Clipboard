@@ -30,16 +30,19 @@ export default function CreateClipboard({ onClipboardCreated }: CreateClipboardP
     try {
       const expiryMinutes = expiryOptions.find(opt => opt.value === expiryOption)?.minutes || 0;
       
-      const response = await fetch('http://localhost:3001/api/clipboard', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          content: content.trim(),
-          password: password || undefined,
-          expiryMinutes: expiryMinutes || undefined,
-          burnAfterReading
-        })
-      });
+     const apiUrl = import.meta.env.VITE_API_URL;
+
+const response = await fetch(`${apiUrl}/api/clipboard`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    content: content.trim(),
+    password: password || undefined,
+    expiryMinutes: expiryMinutes || undefined,
+    burnAfterReading
+  })
+});
+
 
       if (!response.ok) {
         throw new Error('Failed to create clipboard');
