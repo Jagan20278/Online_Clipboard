@@ -41,7 +41,7 @@ Make sure you have the following installed:
 
 1.  **Clone the repository:**
     ```sh
-    git clone [<your-repo-url>](https://github.com/Jagan20278/Online_Clipboard.git)
+    git clone https://github.com/Jagan20278/Online_Clipboard.git
     cd OC/project
     ```
 
